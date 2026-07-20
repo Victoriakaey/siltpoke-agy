@@ -1,0 +1,975 @@
+chapters:
+  - id: core
+    name: Core Pet
+    color: amber
+    done: 7
+    total: 8
+    quests:
+      - id: core-state
+        title: Tamagotchi state machine + vitals + decay
+        status: done
+        note: v1.0 core stack; src/state runtime + write-back
+      - id: core-xp
+        title: XP / levels / progression + daily-action cap
+        status: done
+        note: v1.0 progression; shared 100/day action-XP cap (XP UI in M11.7c rich-home)
+      - id: core-face
+        title: Face renderer (ASCII / emoji frames)
+        status: done
+        note: v1.0; src/face state-card frames
+      - id: core-actions
+        title: Daily actions (feed/clean/pet/play/tease/sleep)
+        status: done
+        note: v1.0; CLI action verbs share the XP cap
+      - id: core-species
+        title: Per-species personality defaults + dial-driven behavior
+        status: done
+        pr: "#185"
+        note: each species seeds its own dial defaults; dials actually steer critique/chat tone
+      - id: core-menubar
+        title: macOS menu-bar pet (SwiftBar) — cross-session review aggregator
+        status: done
+        pr: "#229"
+        note: machine-global SwiftBar plugin; title = total pending across all sessions, dropdown cards tagged repo·branch·#session → dashboard; consent-driven install, macOS-only; notify gated on mute/quiet-hours + plugin-installed
+      - id: core-menubar-reboot
+        title: SwiftBar reboot-persistence + daemon restart
+        status: done
+        pr: "#234"
+        note: login-item LaunchAgent auto-return after reboot + siltpoked restart + menu-bar restart row
+      - id: core-companion
+        title: v1.2 → v1.4 Companion Loop (5 items)
+        status: locked
+        note: blocked on Floating-Chat companion layer landing first (roadmap §3)
+
+  - id: memory
+    name: Memory Book
+    color: violet
+    done: 22
+    total: 26
+    archived:
+      - id: mem-arch-schema
+        title: Memory schema v2 + 3-tier persistence (M11.1)
+        note: home memory.json + project jsonl + archive
+      - id: mem-arch-remember
+        title: /remember + batched summarizer (M11.4)
+        note: batched memory consolidation + /remember CLI
+    quests:
+      - id: mem-t1
+        title: T1 deterministic fact decay + lifecycle schema
+        status: done
+        pr: "#148"
+        note: pinned/recall_count/superseded_by + retire_proposed propose-confirm; /remember auto-pins
+      - id: mem-t2-oracle
+        title: T2 episodic eval oracle (no-regression gate)
+        status: done
+        pr: "#149"
+        note: RetrievePolicy interface + control corpus + wrong-injection-rate metric
+      - id: mem-repair
+        title: Capture upstream repair (test pollution + critique-path + summarizer)
+        status: done
+        pr: "#150"
+        note: scrub 5229→0 + per-candidate validation + rubric-noise filter; paid e2e proved pipeline
+      - id: mem-chat1
+        title: Automatic chat→memory capture (Slice 1)
+        status: done
+        pr: "#151"
+        note: consolidate reads chat as 3rd signal; secret filter at write boundary; new facts land pending
+      - id: mem-chat2
+        title: chat→memory Slice 2 — lifecycle (pending/stability/expiry/PII)
+        status: done
+        pr: "#152"
+        note: every fact pending-first + stability class + soft-tombstone expiry + path/email filter
+      - id: mem-read
+        title: Memory Book read+edit surface + G1 approve/reject
+        status: done
+        pr: "#153"
+        note: timeline + by-type, reasoning-first save_reason, forget/retire soft-delete, deleted mock Kanban
+      - id: mem-g2
+        title: G2 — NL edit via /memory composer
+        status: done
+        pr: "#154"
+        note: haiku classify add/restate/contradict → pending proposal; 3-way replace/keep-both/cancel; bidirectional supersede
+      - id: mem-log
+        title: Per-fact action log (live audit) + supersede link
+        status: done
+        pr: "#156"
+        note: events[] additive schema; expand toggle; closes G2 S2; active/retired chips ($0 deterministic)
+      - id: mem-summaries
+        title: Real per-chat summaries feeding working-memory panel
+        status: done
+        pr: "#158"
+        note: placeholder + consolidate-batched LLM summary + sidecar embed
+      - id: mem-track-a
+        title: Track A — coding-activity auto-capture
+        status: done
+        pr: "#173"
+        note: weekly summarizer reads git commits + critic-pattern counts → coding facts tagged learned_from.stream=commit; + /memory provenance badge (✍️ you typed / 🤖 from commits)
+      - id: mem-chat-capture
+        title: Real-time chat capture — explicit marker ("记住 X")
+        status: done
+        pr: "#177"
+        note: chat can finally WRITE memory in real time; explicit-marker capture + truthful-ack honesty framing; the floor (conversational capture = #178)
+      - id: mem-conversational
+        title: Conversational auto-capture (no command)
+        status: done
+        pr: "#178"
+        note: pet notices durable facts in plain chat + saves on its own (code pre-filter → Haiku extract); explicit "记住 X" still wins; inline [SAVED] marker, active immediately
+      - id: mem-provenance
+        title: Fact provenance fix + /memory kind-badge re-tag affordance
+        status: done
+        pr: "#179"
+        note: chat/+/remember facts record truthful save_reason (was null → mislabeled legacy); kind badge gains dashed-pill affordance so re-tag (style↔profile) reads as clickable
+      - id: mem-facts-flow
+        title: Facts actually flowing in (capture yields real facts)
+        status: done
+        pr: "#177 #178"
+        note: "unblocked by the capture campaign — real-time + conversational capture now yield real user-facts; store holds 8 active (Daniel/cats/pink/中文…); recall measured-good 2026-06-30 ($0 live-probe, both legs)"
+      - id: mem-entity
+        title: Entity model — facts carry first-class entities
+        status: done
+        pr: "#181"
+        note: entities[] field + extraction piggyback + consolidate janitor + /memory group-by-entity; keystone for episode/bridge layers
+      - id: mem-episodic-capture
+        title: Episodic-fragment capture — remembers what you DID
+        status: done
+        pr: "#189"
+        note: commit-stream event_fragments[] in consolidate; 30d TTL; surfaced in the memory-book episodic slot
+      - id: mem-store-unify
+        title: Unify repo stores — index registers a memory project
+        status: done
+        pr: "#190"
+        note: /siltpoke-index now ensureProject(root) — indexed repos appear in the Memory rail, joined to their repo-graph card
+      - id: mem-episode-synth
+        title: Episode synthesis — fragments become daily narratives
+        status: done
+        pr: "#191"
+        note: consolidate day-buckets fragments (host-local), Haiku narrates, code picks membership; 365d TTL episodes[]
+      - id: mem-episode-recall
+        title: Episode recall into chat — the pet references recent work
+        status: done
+        pr: "#192"
+        note: active episodes injected into chat systemPrompt; default-abstain gate + 14d window + cap 3; critic side deferred (option-C only)
+      - id: mem-dup-dom
+        title: Memory-book duplicate-DOM fix + 23-spec e2e realign
+        status: done
+        pr: "#256"
+        note: Memory.tsx x-show→x-if kills duplicate entity-view DOM; realigned 23 drifted e2e specs (e2e 23-fail→104 pass)
+      - id: mem-t3
+        title: T3 write-time triage
+        status: locked
+        note: "blocked: waits for facts to flow; campaign re-grounded to fix-capture-first"
+      - id: mem-t4
+        title: T4 gated Reflexion
+        status: locked
+        note: "blocked: campaign tail, downstream management debt"
+      - id: mem-t2-inject
+        title: T2-injection (critic reads back its own critiques)
+        status: paused
+        note: "no corpus: $0 Q1 spike found 0 substantive self-critiques; revives on external repos"
+      - id: mem-bitemporal
+        title: bi-temporal valid_at / embedding-dedup
+        status: paused
+        note: iceboxed
+
+  - id: repo-graph
+    name: Repo Graph
+    color: moss
+    done: 27
+    total: 28
+    archived:
+      - id: rg-arch-b7
+        title: B.7 Path Highlight guided trace v1
+        pr: "#63"
+        note: smallest-trustworthy guided-trace slice
+      - id: rg-arch-b75
+        title: B.7.5 trace from any node
+        pr: "#66"
+        note: start a trace from any node, not just entrypoints
+      - id: rg-arch-m66
+        title: M6.6 picker unify + index/forget + folder picker
+        pr: "#67–76"
+        note: in-dashboard index/forget + folder picker
+      - id: rg-arch-v11
+        title: Arch View 2.0 v1.1 precision/honesty fixes
+        pr: "#89"
+        note: 6 precision/honesty fixes on the C4 view
+      - id: rg-arch-pa1
+        title: Phase A gap M1 (split-component layer-grounding)
+        pr: "#90"
+        note: split-component containers join the layer-grounding gradient
+      - id: rg-arch-pa2
+        title: Phase A gap M2 (generic consume-time import)
+        pr: "#91"
+        note: Python dotted + ESM .js import resolution
+      - id: rg-arch-pa3
+        title: Phase A gap M3 (comp:→net mapping)
+        pr: "#92"
+        note: component → net-degree mapping
+      - id: rg-arch-ab1
+        title: A/B readout robustness M1 (shared-bucketer grounding)
+        pr: "#93"
+        note: shared-bucketer grounding robustness
+      - id: rg-arch-ab2
+        title: A/B readout M2 (file-as-bucket drill)
+        pr: "#94"
+        note: file-as-bucket drill gap fix
+      - id: rg-arch-tt
+        title: trace-root tree picker
+        pr: "#96"
+        note: browse-to-function trace tree
+      - id: rg-arch-maint
+        title: Maintenance round — e2e refresh 15/15
+        pr: "#100"
+        note: repo-graph e2e refresh + tracker rebuild
+      - id: rg-arch-fc
+        title: §6.2 fat-core topology blind spot (neutral 3rd state)
+        pr: "#102"
+        note: omnipresent-shape ∧ conflict fat-core tier
+      - id: rg-arch-d34
+        title: D3/D4 generic bucketing (saas 1→19)
+        pr: "#104"
+        note: structural branch-point + gap-descend
+      - id: rg-arch-edges
+        title: alias-edge + container counts + honest-subset layout
+        pr: "#105–107"
+        note: index-time anchor resolver + literal counts + band grouping
+      - id: rg-arch-picker
+        title: picker dead-hash + default fallback
+        pr: "#111"
+        note: ?repo= redirect cleanup + picker-order fallback
+      - id: rg-arch-overflow
+        title: arch-context overflow calibration
+        pr: "#114–116"
+        note: cap applies to largest subdir; claude -p stderr → errorMsg
+      - id: rg-arch-plc
+        title: plc data-correctness (keyspace resolve)
+        pr: "#121–123"
+        note: files/search resolve via keyspace; drop hardcoded src/
+      - id: rg-arch-sharding
+        title: arch-context budget-sharding (generate line close)
+        pr: "#124"
+        note: whole-repo breadth under pressure; byte-silent when healthy
+    quests:
+      - id: rg-a
+        title: Phase A structural index + /siltpoke-index
+        status: done
+        pr: "#55"
+        note: tree-sitter → 5-node + 2-edge graph + queryIndex + fingerprints (deterministic, no LLM)
+      - id: rg-b
+        title: Phase B /siltpoke-explain + Brain + cache
+        status: done
+        pr: "#56"
+        note: "first LLM hop: assemble subgraph + Brain + evidence-guard + cache"
+      - id: rg-viz
+        title: B.5/B.6 dashboard viz (DOM+SVG)
+        status: done
+        pr: "#60"
+        note: drill/search/explain; cytoscape rebuilt out
+      - id: rg-trace
+        title: B.7 / B.7.5 — Path Highlight + Trace from any node
+        status: done
+        pr: "#63 #66"
+        note: guided trace level; trace from any starting node
+      - id: rg-arch
+        title: Arch View 2.0 — C4 (authored + honest-subset + LLM-derive + counts + edges)
+        status: done
+        pr: "#78–#124"
+        note: authored C4 + LLM-derive + Phase-A gaps + fat-core/bucketing/alias/counts/layout + generate-line hardening
+      - id: rg-cleanup
+        title: saas/repo-graph cleanup (keyspace migration + e2e greening)
+        status: done
+        pr: "#133 #134"
+        note: degraded-repo drill + tip dismiss + greened e2e
+      - id: rg-finalize
+        title: repo-graph finalize — drop dead extends/references edges
+        status: done
+        pr: "#144"
+        note: lying schema (declared, always 0); eval already ruled graph not worth more investment
+      - id: rg-phasec1
+        title: Phase C slice-1 — critic-graph wiring (caller-impact) + 4-arm eval
+        status: done
+        pr: "#141 #143"
+        note: cross-file caller flags (grep default); graph backend not promoted (grep 6/9 > graph 2/9)
+      - id: rg-panel-overlay
+        title: Code Map panel-overlay drill fix
+        status: done
+        pr: "#257"
+        note: c4Select re-fits the graph clear of the just-opened left panel so the 2nd (drill) click lands
+      - id: rg-phasec
+        title: Phase C — hybrid retrieval (fastembed >500 nodes + ReMindRAG)
+        status: paused
+        note: "deferred after eval: §7 go/no-go unmet (explain adoption=1 all-time); vector retrieval must earn cost first"
+      - id: rg-cyto
+        title: B.5 cytoscape.js renderer
+        status: cancelled
+        note: rebuilt as DOM+SVG in B.6; cytoscape dependency removed
+
+  - id: chat
+    name: Chat
+    color: sky
+    done: 7
+    total: 10
+    quests:
+      - id: chat-backend
+        title: Chat backend — sessions persistence + SSE assembly
+        status: done
+        note: M11.3 chat_sessions[] schema + SSE; src/chat
+      - id: chat-explain
+        title: context-aware floating chat — node-explain leg (Phase 2c)
+        status: done
+        pr: "#145"
+        note: ask a repo-graph node 'what is this'; re-anchor/stale/renamed/budget edge cases handled
+      - id: chat-summaries
+        title: per-chat real summaries (counted under Memory Book)
+        status: done
+        pr: "#158"
+        note: the summary memory-half lives in Memory Book; this is the chat consumer side
+      - id: chat-recall
+        title: Cross-chat RECALL surface (🔗 button + dropdown + injection)
+        status: paused
+        pr: "#158"
+        note: built but PARKED behind RECALL_SURFACE_ENABLED=false; weak relevance on stub summaries + 3-session corpus; awaiting your review + relevance pass to unhide
+      - id: chat-permsg
+        title: per-message recall trigger
+        status: cancelled
+        note: "killed at brainstorm: on-open threshold + ambient instead (Zep per-message −17.7% wrong-injection)"
+      - id: chat-critique-s1
+        title: floating chat — critique leg S1 (read-only, anchored to a critique)
+        status: done
+        pr: "#265"
+        note: "Timeline: select a review → chat anchored to that critique, grounded in critique + severity + evidence + the real diff + Brain reasoning + pet memory; read-only (no dismiss / no learned_rule write)"
+      - id: chat-critique-s2
+        title: floating chat — critique leg S2 (dismiss + learned_rule write)
+        status: locked
+        note: explicitly still wanted (not cut); deferred from S1; opens with companion-loop
+      - id: chat-page-context
+        title: Un-anchored chat + page-level context
+        status: done
+        pr: "#182"
+        note: per-message page context (/memory + /quest-log) + node>page>none precedence + context-transparency chip bar; un-anchored chat grounded by page
+      - id: chat-recap
+        title: Lazy on-open cross-chat recap
+        status: done
+        pr: "#183"
+        note: recap each past chat (Haiku, lazy on modal open) instead of showing its first message; summary_generated_at flag; client sends displayed ids so panel-shown == recapped; callBrainText raw-text call + sanitizer (Haiku unreliable at strict JSON for a one-liner)
+      - id: chat-stream
+        title: Chat-stream failure-path hardening + honest error copy
+        status: done
+        pr: "#201"
+        note: don't persist empty/failed turns; distinguish timeout-kill vs spawn-fail vs empty; cause-specific pet-voice error copy; Stop button aborts in-flight turn; Home XP badge + Timeline range-filter honesty folded in
+
+  - id: critic
+    name: Critic
+    color: terra
+    done: 7
+    total: 9
+    quests:
+      - id: crit-core
+        title: Stop-hook critic + intent classifier + 3-tier rubric + OTEL
+        status: done
+        pr: "#23"
+        note: M11.7a; 11+ rubric rules + tools (tsc/eslint/ripgrep)
+      - id: crit-evidence
+        title: Evidence guard (anti-fabrication, verbatim tool snippets)
+        status: done
+        note: M11.7a; every finding needs ≥1 cited tool snippet
+      - id: crit-reflexion
+        title: Reflexion-on-dismiss + preference log
+        status: done
+        note: M8; dismiss → learned-rule rollback substrate; preference-log feeds future rule generation
+      - id: crit-mute
+        title: mute / unmute (mute beats wake)
+        status: done
+        pr: "#53"
+        note: v1.1-I; router gate + card status line
+      - id: crit-undismiss
+        title: undismiss (status flip + safe learned-rule rollback)
+        status: done
+        pr: "#54"
+        note: v1.1-J; rule_created schema extension
+      - id: crit-empty
+        title: critic empty-evidence visibility + telemetry-throw fix
+        status: done
+        pr: "#142"
+        note: prompt↔schema sync so findings stop being silently dropped; recordToolRun non-tool-key throw fixed
+      - id: crit-v3-reflexion
+        title: Critic reads V3 memory store + rule provenance (Reflexion)
+        status: done
+        pr: "#188"
+        note: dismiss-learned rules + style facts reach the critic from the canonical V3 store; rule provenance surfaced
+      - id: crit-altexp
+        title: critic alternative_explanation field + severity cap
+        status: locked
+        note: "blocked: iceboxed (LLM-judgment findings only)"
+      - id: crit-syco
+        title: sycophancy regression eval
+        status: locked
+        note: "blocked: iceboxed (steal 3-agent shape, swap deterministic oracle)"
+
+  - id: dashboard
+    name: Dashboard
+    color: egg2
+    done: 6
+    total: 6
+    quests:
+      - id: dash-base
+        title: Dashboard SSR + Alpine islands + rich home
+        status: done
+        pr: "#25"
+        note: M11.7c History/Traces UI + Wave 1.5 rich home (Hono JSX + Alpine islands)
+      - id: dash-explain
+        title: explainability UI — confidence/grounded popover
+        status: done
+        pr: "#128"
+        note: chips explain their own arithmetic; grounded was a dead label, now anchored popover
+      - id: dash-toggle
+        title: arch toggle + re-generate UI (cost-confirm + cancel)
+        status: done
+        pr: "#127"
+        note: Authored|Generated toggle; re-generate behind cost dialog, physically away from toggle
+      - id: dash-i18n
+        title: /memory page → English + active-only by-type counts
+        status: done
+        pr: "#157"
+        note: lone Chinese surface translated; monochrome action-log glyphs; by-type drill active-only
+      - id: dash-island
+        title: hx-boost / morph island-listener fixes
+        status: done
+        note: form-submit island reset + morph drops-listeners; root-level delegation pattern
+      - id: dash-timeline
+        title: Timeline — /traces + /history merged into one observability surface
+        status: done
+        pr: "#196"
+        note: master/detail Timeline (filters + summary) folding traces + critic-history into Critic/Diff/Trace/Feedback tabs; old /traces + /history redirect
+
+  - id: quest-log
+    name: Quest Log
+    color: egg
+    done: 6
+    total: 6
+    quests:
+      - id: ql-slice1
+        title: Slice 1 — SSR quest board + island
+        status: done
+        pr: "#159"
+        note: roadmap-as-RPG-quest-board; chapter → quest → sub-task + side-quest tab; agent-authored, human-verified
+      - id: ql-slice2a
+        title: Slice 2a — YAML single-source-of-truth migration
+        status: done
+        pr: "#163"
+        note: data.ts → quests.yaml + zod schema + lazy loader (#164 lazy-loader fix, #165 regression guard); pure refactor, page identical
+      - id: ql-drift
+        title: Slice 2a — data-correctness pass (drift fixes)
+        status: done
+        pr: "#166"
+        note: fixed carried-over drift — #25 attribution, chat-recall paused, dedupe double-counts, this chapter split; zero render change
+      - id: ql-slice2a5
+        title: Slice 2a.5 — content fill (infra/graveyard) + 3-zone render
+        status: done
+        pr: "#167"
+        note: cut-1 content fill (#167 infra/graveyard chapters + category enum + product-only headline); cut-2 3-zone render (#168 PRODUCT/FOUNDATIONS/GRAVEYARD zones + zoneSummary)
+      - id: ql-slice2b
+        title: Slice 2b — generate STATUS Visual tracker from the YAML
+        status: done
+        pr: "#169"
+        note: compact never-drifting snapshot block at top of STATUS (renderSnapshot + gen:tracker + drift-guard); rescoped from "regenerate tracker" (yaml has no dates); one-way YAML→STATUS, milestone timeline untouched
+      - id: ql-slice2c
+        title: Slice 2c — page write-back (review selector persists)
+        status: done
+        pr: "#171"
+        note: "/quest-log review <select> + Save → POST /api/quest-status → writeQuestStatus (yaml Document API, byte-exact) → quests.yaml; per-request read so saves survive reload; 7/7 ACs. Completes the Quest Log SoT migration (2a/2a.5/2b/2c all shipped)"
+
+  - id: daemon
+    name: Daemon
+    color: sky
+    done: 8
+    total: 9
+    quests:
+      - id: dae-bridge
+        title: Hono bridge daemon (127.0.0.1:9876) + SSR + chat SSE + explain routes
+        status: done
+        note: v1.0 core bridge daemon; src/daemon
+      - id: dae-longtask
+        title: Long-task background persistence M1+M2 (cost ledger + stop-bleed)
+        status: done
+        pr: "#108"
+        note: "non-detached: cost ledger + restart→crashed + registry.latest() substrate"
+      - id: dae-m3
+        title: Long-task M3 — detached generate + full reconnect + timeout guard
+        status: done
+        pr: "#109"
+        note: survives navigate-away/tab-close; wall-clock SIGKILL ceiling
+      - id: dae-zombie
+        title: SIGTERM zombie + install idempotency (fork-bomb / symlink fixes)
+        status: done
+        pr: "#130"
+        note: stop clears timers + process.exit; install merges pet identity, no reset
+      - id: dae-q4
+        title: Q4 — paid arch-generate survives mid-run daemon restart (bills once)
+        status: done
+        pr: "#132"
+        note: "fd-direct journaling: child stdout writes result-file independently; adopt+finalize on restart"
+      - id: dae-stale
+        title: generate/daemon hardening — staleness signal + large-repo output guard
+        status: done
+        pr: "#135"
+        note: records boot commit; ⚠ 'N commits behind' + doctor check + mayTruncate
+      - id: dae-auth
+        title: daemon auth posture hardening
+        status: locked
+        note: "blocked: read-only GETs are bare, localhost-only"
+      - id: dae-autostart
+        title: Daemon autostart + hook graceful-absence (reboot-safe)
+        status: done
+        pr: "#224"
+        note: boot-persist via launchd/systemd (removed on uninstall); Stop hook http→silent curl kills the red ECONNREFUSED; self-heal respawn probe; doctor autostart + warn-only alive rows
+      - id: dae-launchd-staleness
+        title: Daemon launchd env-hardening + client-bundle staleness
+        status: done
+        pr: "#230 #258"
+        note: chat stops going mute after reboot (launchd env); ensureClientBundle rebuilds on missing-OR-stale served bundle + fail-safe
+
+  - id: engineering
+    name: Engineering
+    color: ink3
+    done: 26
+    total: 28
+    archived:
+      - id: eng-arch-r10
+        title: R1.0–1.1 baseline + characterization tests
+        note: establish the refactor safety net first
+      - id: eng-arch-r12
+        title: R1.2 split report.ts 3098→352
+        pr: "#37"
+        note: the biggest god-file split
+      - id: eng-arch-r13
+        title: R1.3 split CritiqueAuditBlocks
+        pr: "#31"
+        note: split the audit-blocks component
+      - id: eng-arch-r14
+        title: R1.4 split Critic.tsx 2421→95
+        pr: "#34"
+        note: the largest component split
+      - id: eng-arch-r15
+        title: R1.5 split run-critic 1200→363
+        pr: "#38"
+        note: split the critic runner
+      - id: eng-arch-r16
+        title: R1.6 web→state api port + dep-cruiser
+        pr: "#40"
+        note: move web off direct state access
+      - id: eng-arch-r17
+        title: R1.7 barrel audit + dead-code prune
+        pr: "#41"
+        note: remove dead barrels + unused exports
+      - id: eng-arch-r18
+        title: R1.8 closeout + lint ratchet warn→error
+        pr: "#42"
+        note: flip the LOC ratchet to error-level
+      - id: eng-arch-r91
+        title: R1.9-1 route ownership + web-routes-no-daemon
+        pr: "#47"
+        note: enforce route ownership boundaries
+      - id: eng-arch-r92
+        title: R1.9-2 LearnedRule schema drift fix
+        pr: "#46"
+        note: fix LearnedRule schema drift
+      - id: eng-arch-r93a
+        title: R1.9-3a split critic-event-log
+        pr: "#48"
+        note: split the critic event-log module
+      - id: eng-arch-r93b
+        title: R1.9-3b split Home.data.test
+        pr: "#49"
+        note: split the Home data test (738→3)
+      - id: eng-arch-rn1
+        title: R1-next-1 split on-stop.test
+        pr: "#45"
+        note: split the on-stop test (1131→5)
+      - id: eng-arch-rn2
+        title: R1-next-2 recent-table circular dep
+        pr: "#43"
+        note: break a recent-table circular dependency
+      - id: eng-arch-rn3
+        title: R1-next-3 critic-telemetry rename
+        pr: "#44"
+        note: rename critic-telemetry modules
+      - id: eng-arch-rx
+        title: R1.X commit-gate hook (Task Close Report enforcement)
+        note: hard-enforce Task Close Report at commit time
+    quests:
+      - id: eng-r1
+        title: R1 refactor wave (R1.0 → R1.X) — splits + 0 god-files >800
+        status: done
+        pr: "#31–#49"
+        note: 95.2% files <400 LOC; report.ts 3098→352, Critic.tsx 2421→95
+      - id: eng-commitgate
+        title: commit-gate hook (Task Close Report hard enforcement)
+        status: done
+        note: R1.X; .githooks/pre-commit, marker-file 10-min TTL
+      - id: eng-closegate
+        title: PLC close-gate pr-boundary mode + dogfood loop
+        status: done
+        pr: "#125 #126"
+        note: default since 2026-06-12; per-task delegated to independent reviewer, human approval = PR merge
+      - id: eng-islandharness
+        title: Island DOM-mount test harness
+        status: done
+        pr: "#110"
+        note: happy-dom mounts a real island; RED/GREEN proven on the button-suppression bug
+      - id: eng-greensuite
+        title: Green the full suite (AC11 / cli segfault / e2e popover)
+        status: done
+        pr: "#139"
+        note: cli Bun segfault root-caused to test-runtime fastembed native model → SILTPOKE_EMBED_STUB gate
+      - id: eng-papercuts
+        title: Paper-cuts — Opus 4.5+ cost-calc pricing + light color-scheme
+        status: done
+        pr: "#137"
+        note: opus pricing row update + <meta color-scheme=light> stops auto-invert
+      - id: eng-r2
+        title: R2 — cognitive-complexity reduction at scale (201 remain)
+        status: locked
+        note: "blocked: open backlog; 206 measured 2026-07-12 (biome --max-diagnostics=none — default caps at 20 and badly under-reports); R2.1 (#268) fixed the 3 worst → 203 → 201 on the fully-merged tree"
+      - id: eng-r21
+        title: R2.1 — cut cognitive complexity on the 3 worst functions
+        status: done
+        pr: "#268"
+        note: "handleStopHook 137→0, parseFrontmatter 76→0, extractChangedFiles 68→0; pure refactor, behavior-equivalence independently verified gate-by-gate"
+      - id: eng-r3
+        title: R3 — jscpd dedupe DONE (2.95% → 1.88%)
+        status: done
+        pr: "#269"
+        note: "audit:dup now PASSES (was failing the 2% gate) and is BLOCKING in CI (#272); ~120 lines headroom left under the gate; refused to unify agy-reaper/qoder-reaper (safety-critical); magic-number cleanup not addressed"
+      - id: eng-archprep
+        title: M11.7c.5 — architecture prep
+        status: locked
+        note: "blocked: open backlog; plan exists (9.5K), not started"
+      - id: eng-ci
+        title: CI re-enabled + first Linux run's product bugs
+        status: done
+        pr: "#272 #273"
+        note: "ci.yml + test.yml live again after the Actions billing pause, cost-shaped (no double-billing, cancel-in-progress, Playwright cache, e2e 1xPR/3xmain); audit:dup blocking, lint informational (~353 pre-existing); first Linux run caught Bun.spawnSync throw on missing binary, install.ts spawning macOS-only \"command\" shim (zero agents detected on Linux), and sprawling-abstraction rubric rule's hardcoded Cursor.app rg path"
+      - id: eng-redmain
+        title: main + e2e were red for weeks — fixed
+        status: done
+        pr: "#270 #271"
+        note: "5 unit tests: quest count never re-baselined after 2 board syncs (110→121) + 4 report goldens stale since #261; 2 e2e specs pinned a hardcoded active-quest title against a board that legitimately sits at zero active between tracks, now derived from the YAML SoT"
+
+  - id: cli
+    name: CLI
+    color: moss
+    done: 21
+    total: 21
+    archived:
+      - id: cli-arch-ack
+        title: /siltpoke-ack
+        note: acknowledge a critique — neutral status flip
+      - id: cli-arch-approve
+        title: /siltpoke-approve
+        note: approve a pending fact (pending → active)
+      - id: cli-arch-dismiss
+        title: /siltpoke-dismiss
+        note: dismiss a critique + learn why it was wrong
+      - id: cli-arch-undismiss
+        title: /siltpoke-undismiss
+        note: restore a dismissed critique + roll back rule
+      - id: cli-arch-feedback
+        title: /siltpoke-feedback
+        note: free-text feedback on a critique → preference log
+      - id: cli-arch-forward
+        title: /siltpoke-forward
+        note: surface one critique by id into the chat
+      - id: cli-arch-forwardall
+        title: /siltpoke-forward-all
+        note: surface every pending critique at once
+      - id: cli-arch-inbox
+        title: /siltpoke-inbox
+        note: show pending critiques waiting to forward
+      - id: cli-arch-last
+        title: /siltpoke-last
+        note: surface the most recent critique
+      - id: cli-arch-reject
+        title: /siltpoke-reject
+        note: reject a pending fact
+      - id: cli-arch-review
+        title: /siltpoke-review
+        note: review queue surface
+      - id: cli-arch-relocate
+        title: /siltpoke-relocate
+        note: move siltpoke's home / project root
+      - id: cli-arch-where
+        title: /siltpoke-where
+        note: show where siltpoke is installed / rooted
+      - id: cli-arch-stats
+        title: /siltpoke-stats
+        note: daily spend + budget state + trigger mode
+      - id: cli-arch-report
+        title: /siltpoke-dashboard
+        note: open the dashboard (starts the server if needed)
+      - id: cli-arch-reportstop
+        title: /siltpoke-restart-daemon
+        note: restart the dashboard daemon (stop + start)
+      - id: cli-arch-daemon
+        title: /siltpoke-daemon
+        note: manage siltpoked — start/stop/status/autostart
+    quests:
+      - id: cli-card
+        title: /siltpoke — state card (name/level/mood/spend/trigger mode)
+        status: done
+        note: core surface; src/cli/card.ts
+      - id: cli-doctor
+        title: /siltpoke-doctor — 7-check install diagnostic
+        status: done
+        pr: "#52"
+        note: v1.1-L; surfaced 3 real install issues on first run; + daemon-staleness + last-Brain checks
+      - id: cli-repograph
+        title: /siltpoke-explain + /siltpoke-index + /siltpoke-graph
+        status: done
+        pr: "#55 #56"
+        note: structural index (no LLM) + explain (Brain hop) + graph dashboard
+      - id: cli-rest
+        title: chat / remember / mute / wake + daily-action verbs
+        status: done
+        pr: "#53"
+        note: chat REPL + memory + critic gates + feed/clean/pet/play/tease/sleep
+  - id: brain-retrieval
+    name: Brain & Retrieval
+    color: violet
+    category: infra
+    done: 10
+    total: 11
+    quests:
+      - id: brain
+        title: Brain — claude -p second-opinion reviewer
+        status: done
+        note: v1.0 core; src/brain runs `claude -p` as a subprocess for the second-opinion review; failure classify/retry/breaker added in the batch-2 honesty round
+      - id: few-shot
+        title: Few-shot semantic retrieval of past Brain examples
+        status: done
+        note: M11.7b; src/few-shot — fastembed + cosine retrieval feeding Brain few-shot prompts
+      - id: eval
+        title: Offline eval harness for prompt/routing changes
+        status: done
+        note: src/eval — offline eval harness; the grep-vs-graph paid eval ran on it
+      - id: brain-crossfamily
+        title: Cross-family reviewer provider — Codex can BE the Brain
+        status: done
+        pr: "#225"
+        note: reviewer_provider config key decouples reviewer from host (host=claude + reviewer=codex); codex exec adapter; per-provider cost/quota ledger (cost_usd null, never fabricated $); 50/day cap; doctor row + run-eval --provider codex
+      - id: brain-crossfamily-providers
+        title: Cross-family Brain reviewer providers (agy / qoder / codebuddy)
+        status: done
+        pr: "#247 #248 #249"
+        note: reviewer_provider runs headless CC-fork CLIs as cross-family reviewers (zero Claude in their model lists); shared makeCcForkReviewerProvider factory; SILTPOKE_INTERNAL recursion guard (#253/#254 fixes)
+      - id: brain-moat
+        title: Moat mechanism proven (in-repo A/B spike)
+        status: done
+        note: 3-arm A/B (memory OFF/ON) shows an injected project decision makes the critic catch a violation a memory-less reviewer misses (3/3 vs 0/3); bottleneck reclassified to population; docs/research/2026-07-11-moat-proof-spike.md
+      - id: brain-single
+        title: single-brain identity — config SoT + provider registry (S1/S2)
+        status: paused
+        pr: "#251 #252"
+        note: reviewer_provider promoted to global brain-config SoT + provider registry; callRaw primitive + non-streaming consumers migrated; chat-side family unification still ahead
+      - id: brain-reviewer-model
+        title: reviewer_model — pick the reviewers model (single-brain critic half)
+        status: done
+        pr: "#261"
+        note: config chooses which model the active reviewer_provider runs; reaches agy/qoder/codebuddy --model (codex has no flag); activates the agy cross-family honesty-warn; chat side still ahead
+      - id: brain-moat-eval
+        title: moat-eval instrument — measure memory-lift on the critic
+        status: done
+        pr: "#260"
+        note: quantifies the moat spike — memory OFF/ON/planted arms + blind decision-violation grader + pre-registered mid-p McNemar EARNS-KEEP; full paid matrix deferred to a release trigger
+      - id: brain-qoder-reaper
+        title: qoder session reaper — bound ~/.qoder growth
+        status: done
+        pr: "#262"
+        note: best-effort/never-throws + 24h min-age + siltpoke-owned registry as sole delete authority (race-free via qoders own-call session_id); mirrors agy-reaper safety
+      - id: brain-codebuddy-smoke
+        title: codebuddy live smoke — real reviewer call proven end-to-end
+        status: done
+        pr: "#266"
+        note: "real codebuddy -p call (36s, quota-billed, schema-valid BrainOutput, caught a planted off-by-one); closed a coverage gap — codebuddy returns fenced ```json replies, every prior ccfork test fed bare JSON"
+  - id: platform
+    name: Platform
+    color: sky
+    category: infra
+    done: 7
+    total: 7
+    quests:
+      - id: installer
+        title: Plugin install flow + path resolution + settings wiring
+        status: done
+        note: src/installer — plugin install flow, path resolution, settings.json wiring
+      - id: config
+        title: Config schema + verifier + defaults
+        status: done
+        note: src/config — config schema + verifier + defaults
+      - id: observability
+        title: OTEL + cost-per-call + run-history telemetry
+        status: done
+        note: src/observability — OTEL + cost-per-call + run-history; failed-run ledger + two-head estimate landed in the batch-2 honesty round
+      - id: day1-gate
+        title: Day-1 release gate — license + first-touch fixes
+        status: done
+        pr: "#186"
+        note: PolyForm NC license; first-touch silent-no-op welcome; doctor inner.txt; Ollama pull notice; README honesty
+      - id: plat-bootstrap
+        title: Bootstrap onboarding P1–P4 (dual-platform installer + wizard)
+        status: done
+        pr: "#231 #234 #235 #236 #238"
+        note: one-command macOS+Windows install; ask-first localized wizard; CLI-agent detect/offer + project-lifecycle install; menu→install wiring + editor branch A/B/C
+      - id: plat-multihost
+        title: Multi-host adapters — codebuddy / qoder / codex / agy
+        status: done
+        pr: "#240 #241 #244 #246"
+        note: CcForkHostAdapter factory reuses claude settings mutators for codebuddy/qoder/agy homes; host-adapter unification (codex + registry-driven install menus); agy as a complete host (Stop-hook review + statusLine face)
+      - id: plat-installer-picker
+        title: Installer picker + --agent flag
+        status: done
+        pr: "#255"
+        note: space-to-toggle installer picker + --agent flag
+  - id: graveyard
+    name: Graveyard
+    color: ink3
+    category: graveyard
+    done: 0
+    total: 9
+    quests:
+      - id: gy-repo-memory
+        title: Repo-memory MVP (fastembed + tree-sitter flat summaries)
+        status: cancelled
+        note: M11.7b MVP; superseded by repo-graph for structural queries
+      - id: gy-m116-standalone
+        title: M11.6 as a standalone milestone
+        status: cancelled
+        note: absorbed into M11.7c (History/Traces UI)
+      - id: gy-direct-api-brain
+        title: Direct Anthropic API for the Brain reviewer
+        status: cancelled
+        note: chose the `claude -p` subprocess instead (no API-key management)
+      - id: gy-hardcoded-pet-stats
+        title: Hardcoded pet stats
+        status: cancelled
+        note: replaced by the runtime state machine (src/state)
+      - id: gy-tamagotchi-for-ai
+        title: Positioning — Tamagotchi-for-AI
+        status: cancelled
+        note: strategy pivot, considered then dropped (coverage audit 2026-06-28)
+      - id: gy-cross-ai-memory
+        title: Positioning — cross-AI shared memory
+        status: cancelled
+        note: strategy pivot, dropped (coverage audit 2026-06-28)
+      - id: gy-teach-vibe-coders
+        title: Positioning — teach vibe-coders
+        status: cancelled
+        note: strategy pivot, dropped (coverage audit 2026-06-28)
+      - id: gy-multi-tool-middleware
+        title: Positioning — multi-tool middleware
+        status: cancelled
+        note: strategy pivot, dropped (coverage audit 2026-06-28)
+      - id: gy-tmux-face
+        title: tmux status-right face layer
+        status: cancelled
+        note: built end-to-end (T1-T4) then abandoned pre-merge; single-line cramped, dashboard already serves the big face; replaced by the macOS menu-bar pet
+
+sideQuests:
+  - id: sq-chat-del
+    type: bug
+    chapter: Chat
+    color: sky
+    title: Deleting one chat-history row closes the whole list
+    desc: Tapping a single history row's delete collapses the entire history panel back to chat view instead of deleting just that row. Suspected missing stopPropagation / reused close-history toggle.
+    found: "STATUS Icebox 2026-06-24 (user live); src/web/client/islands/floating-chat.ts"
+  - id: sq-rubric-noise
+    type: bug
+    chapter: Critic
+    color: terra
+    title: Deterministic rubric flag re-emitted every Stop (noise)
+    desc: The critic re-surfaces the same god-file/god-function rubric flag turn after turn (~1002 near-identical) — pure noise, not something episodic memory fixes. Cheap deterministic suppress (rule+file+symbol unchanged → skip).
+    found: STATUS Icebox 2026-06-24, from memory-T2 Q1 spike
+  - id: sq-stale-signal
+    type: bug
+    chapter: Daemon
+    color: sky
+    title: daemon-staleness signal over-reports (alarm fatigue)
+    desc: "The 'N commits behind' banner compares git SHA not served bytes, so doc-only commits and rebuild-without-restart both trip it — cries wolf until the one real stale-fix gets ignored. Fix: count only src/ commits, or compare loaded-source/bundle hash."
+    found: "STATUS Icebox 2026-06-14, follow-up to #135"
+  - id: sq-ledger-loss
+    type: bug
+    chapter: Daemon
+    color: sky
+    title: Cost-ledger lost if registry persist() throws on write
+    desc: taskRegistry.finish()→persist()→atomicWrite() has no error handling; a disk-full/permission failure skips the appendUsageEvent, so a paid Brain run completes but its usage-events entry vanishes (the invisible-burn class).
+    found: STATUS Icebox 2026-06-09, M3.2 independent reviewer (MEDIUM)
+  - id: sq-picker-deadend
+    type: bug
+    chapter: Dashboard
+    color: egg2
+    title: Picker dead-ends on daemon's launch dir when unindexed
+    desc: /repo-graph SSR default = proj_hash of the daemon's cwd; a global daemon launched from an arbitrary dir resolves to an unindexed hash → 'No graph indexed' dead-end even with good indexes in the dropdown. Fall back to most-recently-indexed.
+    found: "STATUS Icebox 2026-06-08 (read-only diagnosis); src/web/routes/repo-graph.tsx:136"
+  - id: sq-calls-edge
+    type: bug
+    chapter: Repo Graph
+    color: moss
+    title: calls-edge substrate — bare-name resolution + test-file call tracking
+    desc: Graph calls edges are bare-name strings (~31% repo-resolved); the paid eval showed graph loses to grep partly because it under-traces test-file callers. Fix = resolve names→node-ids at index time + resolve test-file call sites.
+    found: STATUS Icebox 2026-06-22, from PR-B eval
+  - id: sq-deeplink
+    type: idea
+    chapter: Repo Graph
+    color: moss
+    title: URL deep-linking / drill-state sync
+    desc: "repo-graph drill state is client-only — a refresh drops back to the un-drilled default. Sync the viewed node into the URL (?node=…) ↔ island both ways: refresh restores view, deep-link to any node, unblocks chat 'return to node'."
+    found: STATUS Icebox 2026-06-23, from phase-2c chat smoke
+  - id: sq-graph-chat
+    type: idea
+    chapter: Chat
+    color: sky
+    title: Graph-level / whole-graph chat
+    desc: Floating chat is only node-aware (anchor = selected node); no entry to ask about the whole architecture ('how does this connect?'). Add a whole-graph anchor tier + graph-summary packing (too big to feed raw). ~one companion-loop track.
+    found: STATUS Icebox 2026-06-23, from phase-2c chat smoke
+  - id: sq-spaced
+    type: idea
+    chapter: Memory Book
+    color: violet
+    title: Spaced / interleaved retrieval (temporal axis)
+    desc: "siltpoke has the knowledge substrate + retrieval-at-write-time but nothing re-surfaces past understanding over time. The pet occasionally pokes 'two weeks ago you wrote X — remember why Y not Z?' = spaced retrieval. Hard rule: curiosity, zero scoreboard."
+    found: STATUS Icebox 2026-06-22, from mattpocock teach skill
+  - id: sq-comprehension
+    type: idea
+    chapter: Chat
+    color: sky
+    title: Proactive comprehension nudge after a big AI diff
+    desc: "Flip one comprehension touch from pull → gentle push: after a large diff lands, the pet lightly pokes 'do you get this?', framed as curiosity (not critic, not graded). Gated on answering the explain pull-vs-value question first."
+    found: STATUS Icebox 2026-06-23, from Linus Torvalds talk
+  - id: sq-community
+    type: idea
+    chapter: Repo Graph
+    color: moss
+    title: Community detection on the repo-graph
+    desc: "Borrow Leiden/Louvain (deterministic, $0) over the existing graph: (1) community-sliced subgraphs for sharper/smaller explain Brain inputs; (2) free post-index products (god-node list, suggested questions, surprising connections)."
+    found: STATUS Icebox 2026-06-09, from a Graphify walkthrough
+  - id: sq-incremental
+    type: idea
+    chapter: Repo Graph
+    color: moss
+    title: Commit-hook incremental rebuild of the repo-graph
+    desc: fingerprints (diff substrate) already ship but there's no 'on commit → incremental update' wire. A post-commit/post-merge trigger re-indexes only fingerprint-changed files, keeping the graph live without a full /siltpoke-index.
+    found: STATUS Icebox 2026-06-09, from Graphify hook install
+  # ── Day-1 public-release must-fixes (2026-06-30 readiness audit) ──
+  # RESOLVED in feat/day1-release-gate: sq-doctor-innertxt (doctor treats
+  # absent inner.txt as healthy + wrapper renders standalone face),
+  # sq-nocode-noop (first-touch ambient welcome), sq-ollama-silent-pull
+  # (branded pull notice), sq-license-missing (LICENSE = PolyForm NC 1.0.0),
+  # sq-readme-honesty (README license/model/test-count reconciled). Removed
+  # from the open board; provenance lives in CHANGELOG + git history.
+  - id: sq-public-repo-split
+    type: idea
+    chapter: Platform
+    color: sky
+    title: Public repo split — one-repo-two-remotes
+    desc: Going public (~2026-07-01) needs a way to push a public main while unreleased WIP branches stay private. Cheapest path = one repo, two remotes (push public main, never push WIP branches) rather than a hand-copied feature subset. Open Q — which features stay private.
+    found: public-repo-split-strategy memory 2026-06-30
